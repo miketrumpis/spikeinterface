@@ -235,7 +235,7 @@ class ChunkRecordingExecutor:
 
     def __init__(self, recording, func, init_func, init_args, verbose=False, progress_bar=False, handle_returns=False,
                  n_jobs=1, total_memory=None, chunk_size=None, chunk_memory=None, chunk_duration=None,
-                 mp_context=None, job_name=''):        
+                 mp_context=None, job_name='', time_per_chunk=2):
         self.recording = recording
         self.func = func
         self.init_func = init_func
@@ -259,6 +259,7 @@ class ChunkRecordingExecutor:
                                             chunk_memory=chunk_memory, chunk_duration=chunk_duration,
                                             n_jobs=self.n_jobs)
         self.job_name = job_name
+        self.time_per_chunk = time_per_chunk
 
         if verbose:
             print(self.job_name, 'with n_jobs =', self.n_jobs, 'and chunk_size =', self.chunk_size)
@@ -299,8 +300,9 @@ class ChunkRecordingExecutor:
                                      initializer=worker_initializer,
                                      mp_context=mp.get_context(self.mp_context),
                                      initargs=(self.func, self.init_func, self.init_args)) as executor:
-
-                results = executor.map(function_wrapper, all_chunks)
+                timeout = len(all_chunks) * self.time_per_chunk
+                print('setting timeout for 2s per chunk:', timeout, 'sec')
+                results = executor.map(function_wrapper, all_chunks, timeout=timeout)
 
                 if self.progress_bar:
                     results = tqdm(results, desc=self.job_name, total=len(all_chunks))
