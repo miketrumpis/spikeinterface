@@ -284,6 +284,7 @@ def _init_worker_waveform_extractor(recording, unit_ids, spikes, wfs_arrays_info
 
 # used by ChunkRecordingExecutor
 def _waveform_extractor_chunk(segment_index, start_frame, end_frame, worker_ctx):
+    import gc
     # recover variables of the worker
     recording = worker_ctx['recording']
     unit_ids = worker_ctx['unit_ids']
@@ -350,3 +351,5 @@ def _waveform_extractor_chunk(segment_index, start_frame, end_frame, worker_ctx)
                     wfs[pos, :, :] = wf
                 else:
                     wfs[pos, :, :] = wf[:, sparsity_mask[unit_ind]]
+            del wfs
+    gc.collect()

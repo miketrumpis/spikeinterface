@@ -301,7 +301,7 @@ class ChunkRecordingExecutor:
                                      mp_context=mp.get_context(self.mp_context),
                                      initargs=(self.func, self.init_func, self.init_args)) as executor:
                 timeout = len(all_chunks) * self.time_per_chunk
-                print('setting timeout for 2s per chunk:', timeout, 'sec')
+                print('setting timeout for', self.time_per_chunk, 'per chunk:', timeout, 'sec')
                 results = executor.map(function_wrapper, all_chunks, timeout=timeout)
 
                 if self.progress_bar:
@@ -313,7 +313,7 @@ class ChunkRecordingExecutor:
                 else:
                     for res in results:
                         pass
-
+            print('Process pool has closed')
         return returns
 
 
