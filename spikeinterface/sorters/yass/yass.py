@@ -152,7 +152,9 @@ class YassSorter(BaseSorter):
         np.savetxt(probe_file_txt, geom_txt)
 
         #   params
-        yass_params['recordings']['sampling_rate'] = recording.get_sampling_frequency()
+        # YASS calculates chunk sizes based on seconds * sampling rate without checking for fractional rates,
+        # so avoid problems by forcing an integer rate here
+        yass_params['recordings']['sampling_rate'] = int(round(recording.get_sampling_frequency()))
         yass_params['recordings']['n_channels'] = recording.get_num_channels()
 
         # save to int16 raw
