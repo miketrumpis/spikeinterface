@@ -27,6 +27,8 @@ class Mountainsort4Sorter(BaseSorter):
         'whiten': True,  # Whether to do channel whitening as part of preprocessing
         'num_workers': 1,
         'clip_size': 50,
+        'interpolate_factor': 1,
+        'num_features': 10,
         'detect_threshold': 3,
         'detect_interval': 10,  # Minimum number of timepoints between events detected on the same channel
         'tempdir': None
@@ -45,6 +47,8 @@ class Mountainsort4Sorter(BaseSorter):
         'whiten': "Enable or disable whitening",
         'num_workers': "Number of workers (if None, half of the cpu number is used)",
         'clip_size': "Number of samples per waveform",
+        'interpolate_factor': 'Upsample waveform clips by this factor',
+        'num_features': 'Number of PC dims for clustering',
         'detect_threshold': "Threshold for spike detection",
         'detect_interval': "Minimum number of timepoints between events detected on the same channel",
         'tempdir': "Temporary directory for mountainsort (available for ms4 >= 1.0.2)s"
@@ -116,6 +120,8 @@ class Mountainsort4Sorter(BaseSorter):
                           clip_size=p['clip_size'],
                           detect_threshold=p['detect_threshold'],
                           detect_interval=p['detect_interval'],
+                          interpolate_factor=p['interpolate_factor'],
+                          num_features=p['num_features'],
                           num_workers=p['num_workers'],
                           verbose=verbose)
         
