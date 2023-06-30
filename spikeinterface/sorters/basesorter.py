@@ -131,7 +131,7 @@ class BaseSorter:
 
         rec_file = output_folder / 'spikeinterface_recording.json'
         if recording.is_dumpable:
-            recording.dump_to_json(rec_file)
+            recording.dump_to_json(rec_file, relative_to=output_folder)
         else:
             d = {'warning': 'The recording is not dumpable'}
             rec_file.write_text(json.dumps(d, indent=4), encoding='utf8')
@@ -287,7 +287,7 @@ class BaseSorter:
             sorting = cls._get_result_from_folder(output_folder)
         
         # register recording to Sorting object
-        recording = load_extractor(output_folder / 'spikeinterface_recording.json')
+        recording = load_extractor(output_folder / 'spikeinterface_recording.json', base_folder=output_folder)
         if recording is not None:
             # can be None when not dumpable
             sorting.register_recording(recording)

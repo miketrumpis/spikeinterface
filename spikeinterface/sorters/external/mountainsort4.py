@@ -88,7 +88,8 @@ class Mountainsort4Sorter(BaseSorter):
     def _run_from_folder(cls, sorter_output_folder, params, verbose):
         import mountainsort4
 
-        recording = load_extractor(sorter_output_folder.parent / 'spikeinterface_recording.json')
+        recording = load_extractor(sorter_output_folder.parent / 'spikeinterface_recording.json',
+                                   base_folder=sorter_output_folder.parent)
 
         # alias to params
         p = params
